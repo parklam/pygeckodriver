@@ -9,6 +9,6 @@ pip install pygeckodriver
 from selenium import webdriver
 from pygeckodriver import geckodriver_path
 
-bs = webdriver.Chrome(executable_path=geckodriver_path)
+bs = webdriver.Firefox(executable_path=geckodriver_path)
 bs.get('https://www.pypi.org')
 ```
