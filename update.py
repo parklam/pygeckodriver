@@ -85,7 +85,7 @@ def download_geckodriver(version):
                         or 'win64' in filename:
                     filename += '.exe'
 
-                if '.tar.gz' in asset['name']:
+                if asset['name'].endswith('.tar.gz'):
                     tf = tarfile.open(fileobj=BytesIO(requests.get(url).content))
                     for f in tf.getnames():
                         if 'geckodriver' in f:
@@ -93,7 +93,7 @@ def download_geckodriver(version):
                             os.rename(os.path.join(DOWNLOAD_DIR, f), \
                                     os.path.join(DOWNLOAD_DIR, filename))
                             os.chmod(os.path.join(DOWNLOAD_DIR, filename), 0o755)
-                elif '.gz' in asset['name']:
+                elif asset['name'].endswith('.gz'):
                     gf = gzip.GzipFile(fileobj=BytesIO(requests.get(url).content))
                     with open(os.path.join(DOWNLOAD_DIR, filename), 'wb') as f:
                         f.write(gf.read())
