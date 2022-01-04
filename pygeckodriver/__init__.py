@@ -9,25 +9,21 @@ import platform
 
 _BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
 def _get_filename():
-    path = os.path.join(_BASE_DIR, 'geckodriver_')
+    arch = '64' if platform.machine().endswith('64') else '32'
 
     sys = platform.system()
-    arch = platform.machine()
-    file_extension = None
     if sys == 'Darwin':
-        path += 'macos'
+        file_name = 'geckodriver_macos'
+    elif sys == 'Windows':
+        file_name = 'geckodriver_win{}.exe'.format(arch)
+    elif sys == 'Linux':
+        file_name = 'geckodriver_linux{}'.format(arch)
     else:
-        if sys == 'Windows':
-            path += 'win'
-            file_extension = ".exe"
-        elif sys == 'Linux':
-            path += 'linux'
-        else:
-            raise Exception('OS not supported')
-        path += '64' if arch.endswith('64') else '32'
-        path += file_extension
+        raise Exception('OS {} not supported'.format(sys))
 
+    path = os.path.join(_BASE_DIR, file_name)
     if not os.path.exists(path):
         raise FileNotFoundError('GeckoDriver for {}({}) '
                                 'is not found.'.format(sys, arch))
